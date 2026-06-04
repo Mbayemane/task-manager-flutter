@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
-  final String baseUrl = "http://10.0.2.2:3000/auths";
+  final String baseUrl = "https://task-manager-api-fx61.onrender.com/auths";
 
   // Connexion
   Future<void> login(String email, String password) async {
@@ -21,8 +21,19 @@ class AuthService {
       final token = data["access_token"] ?? data["token"];
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString("auth_token", token);
+
+      // Sauvegarder le nom de l'utilisateur
+      if (data["user"] != null) {
+        final user = data["user"];
+        final name = "${user['prenom'] ?? ''} ${user['nom'] ?? ''}".trim();
+        await prefs.setString("user_name", name.isNotEmpty ? name : email);
+        await prefs.setString("user_email", email);
+      } else {
+        await prefs.setString("user_name", email);
+        await prefs.setString("user_email", email);
+      }
     } else {
-      throw Exception("Échec de la connexion");
+      throw Exception("Échec de la connexion : ${response.statusCode}");
     }
   }
 
@@ -43,7 +54,7 @@ class AuthService {
     );
 
     if (response.statusCode != 200 && response.statusCode != 201) {
-      throw Exception("Échec de l'inscription");
+      throw Exception("Échec de l'inscription : ${response.statusCode}");
     }
   }
 
@@ -69,7 +80,7 @@ class AuthService {
   Future<Map<String, dynamic>> getProfile() async {
     final token = await getToken();
     final response = await http.get(
-      Uri.parse("$baseUrl/profiles"),
+      Uri.parse("$baseUrl/profils"),
       headers: {
         "Content-Type": "application/json",
         "Authorization": "Bearer $token",
@@ -87,7 +98,7 @@ class AuthService {
   Future<void> updateProfile(Map<String, dynamic> data) async {
     final token = await getToken();
     final response = await http.put(
-      Uri.parse("$baseUrl/profiles"),
+      Uri.parse("$baseUrl/profils"),
       headers: {
         "Content-Type": "application/json",
         "Authorization": "Bearer $token",

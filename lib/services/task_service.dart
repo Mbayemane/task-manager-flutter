@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../models/task.dart';
 
 class TaskService {
-  final String baseUrl = "http://10.0.2.2:3000/task";
+  final String baseUrl = "https://task-manager-api-fx61.onrender.com/task";
 
   // Récupérer le token
   Future<String?> _getToken() async {
@@ -43,10 +43,12 @@ class TaskService {
       body: jsonEncode(task.toJson()),
     );
 
-    if (response.statusCode == 201) {
+    if (response.statusCode == 200 || response.statusCode == 201) {
       return Task.fromJson(jsonDecode(response.body));
     } else {
-      throw Exception("Échec de la création de la tâche");
+      throw Exception(
+        "Échec de la création : ${response.statusCode} - ${response.body}",
+      );
     }
   }
 
@@ -62,10 +64,12 @@ class TaskService {
       body: jsonEncode(task.toJson()),
     );
 
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200 || response.statusCode == 201) {
       return Task.fromJson(jsonDecode(response.body));
     } else {
-      throw Exception("Échec de la mise à jour de la tâche");
+      throw Exception(
+        "Échec de la mise à jour : ${response.statusCode} - ${response.body}",
+      );
     }
   }
 
@@ -80,8 +84,10 @@ class TaskService {
       },
     );
 
-    if (response.statusCode != 200) {
-      throw Exception("Échec de la suppression de la tâche");
+    if (response.statusCode != 200 && response.statusCode != 204) {
+      throw Exception(
+        "Échec de la suppression : ${response.statusCode}",
+      );
     }
   }
 }
