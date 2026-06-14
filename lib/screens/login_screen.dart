@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../services/auth_service.dart';
 import 'register_screen.dart';
 import 'dashboard_screen.dart';
+import 'forgot_password_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -68,7 +69,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   color: const Color(0xFF2563EB),
                   borderRadius: BorderRadius.circular(16),
                 ),
-                child: const Icon(Icons.check_box, color: Colors.white, size: 36),
+                child: const Icon(
+                  Icons.check_box,
+                  color: Colors.white,
+                  size: 36,
+                ),
               ),
               const SizedBox(height: 20),
 
@@ -107,31 +112,38 @@ class _LoginScreenState extends State<LoginScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Email
-                    const Text('Email',
-                        style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: Color(0xFF374151))),
+                    const Text(
+                      'Email',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        color: Color(0xFF374151),
+                      ),
+                    ),
                     const SizedBox(height: 8),
                     TextField(
                       controller: _emailController,
                       keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
                         hintText: 'exemple@task.com',
-                        hintStyle: const TextStyle(color: Color(0xFF9CA3AF)),
+                        hintStyle:
+                            const TextStyle(color: Color(0xFF9CA3AF)),
                         prefixIcon: const Icon(Icons.email_outlined,
                             color: Color(0xFF9CA3AF)),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
-                          borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
+                          borderSide:
+                              const BorderSide(color: Color(0xFFE5E7EB)),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
-                          borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
+                          borderSide:
+                              const BorderSide(color: Color(0xFFE5E7EB)),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
-                          borderSide: const BorderSide(color: Color(0xFF2563EB)),
+                          borderSide:
+                              const BorderSide(color: Color(0xFF2563EB)),
                         ),
                         filled: true,
                         fillColor: const Color(0xFFF9FAFB),
@@ -140,18 +152,22 @@ class _LoginScreenState extends State<LoginScreen> {
                     const SizedBox(height: 16),
 
                     // Mot de passe
-                    const Text('Mot de passe',
-                        style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: Color(0xFF374151))),
+                    const Text(
+                      'Mot de passe',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        color: Color(0xFF374151),
+                      ),
+                    ),
                     const SizedBox(height: 8),
                     TextField(
                       controller: _passwordController,
                       obscureText: _obscurePassword,
                       decoration: InputDecoration(
                         hintText: '••••••••',
-                        hintStyle: const TextStyle(color: Color(0xFF9CA3AF)),
+                        hintStyle:
+                            const TextStyle(color: Color(0xFF9CA3AF)),
                         prefixIcon: const Icon(Icons.lock_outline,
                             color: Color(0xFF9CA3AF)),
                         suffixIcon: IconButton(
@@ -162,26 +178,53 @@ class _LoginScreenState extends State<LoginScreen> {
                             color: const Color(0xFF9CA3AF),
                           ),
                           onPressed: () {
-                            setState(() => _obscurePassword = !_obscurePassword);
+                            setState(
+                                () => _obscurePassword = !_obscurePassword);
                           },
                         ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
-                          borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
+                          borderSide:
+                              const BorderSide(color: Color(0xFFE5E7EB)),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
-                          borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
+                          borderSide:
+                              const BorderSide(color: Color(0xFFE5E7EB)),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
-                          borderSide: const BorderSide(color: Color(0xFF2563EB)),
+                          borderSide:
+                              const BorderSide(color: Color(0xFF2563EB)),
                         ),
                         filled: true,
                         fillColor: const Color(0xFFF9FAFB),
                       ),
                     ),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 12),
+
+                    // Mot de passe oublié
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const ForgotPasswordScreen(),
+                            ),
+                          );
+                        },
+                        child: const Text(
+                          'Mot de passe oublié ?',
+                          style: TextStyle(
+                            color: Color(0xFF2563EB),
+                            fontSize: 13,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
 
                     // Bouton Se connecter
                     SizedBox(
@@ -201,7 +244,10 @@ class _LoginScreenState extends State<LoginScreen> {
                               icon: const Icon(Icons.arrow_forward),
                               label: const Text(
                                 'Se connecter',
-                                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
                             ),
                     ),
@@ -215,7 +261,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (_) => const RegisterScreen()),
+                    MaterialPageRoute(
+                        builder: (_) => const RegisterScreen()),
                   );
                 },
                 child: const Text(

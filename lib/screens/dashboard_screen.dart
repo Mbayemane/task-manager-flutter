@@ -31,13 +31,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
   final List<String> _filters = ['Toutes', 'Élevée', 'Moyenne', 'Basse'];
 
   @override
-void initState() {
-  super.initState();
-  _loadUserInfo(); // ← MANQUAIT !
-  _loadTasks();
-  final syncManager = TaskSyncManager(TaskService(), TaskCache());
-  syncManager.syncPendingTasks();
-}
+  void initState() {
+    super.initState();
+    _loadUserInfo();
+    _loadTasks();
+    final syncManager = TaskSyncManager(TaskService(), TaskCache());
+    syncManager.syncPendingTasks();
+  }
 
   Future<void> _loadUserInfo() async {
     final prefs = await SharedPreferences.getInstance();
@@ -222,25 +222,32 @@ void initState() {
                     ),
                   ),
                   const SizedBox(width: 12),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '${tasks.length} Tâches en attente',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
+                  // ✅ Expanded pour éviter le overflow
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '${tasks.length} Tâches en attente',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
                         ),
-                      ),
-                      Text(
-                        '${_getGreeting()}, $_userName',
-                        style: const TextStyle(
-                          color: Colors.white70,
-                          fontSize: 13,
+                        Text(
+                          '${_getGreeting()}, $_userName',
+                          style: const TextStyle(
+                            color: Colors.white70,
+                            fontSize: 13,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ],
               ),

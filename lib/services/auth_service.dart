@@ -22,7 +22,6 @@ class AuthService {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString("auth_token", token);
 
-      // Sauvegarder le nom de l'utilisateur
       if (data["user"] != null) {
         final user = data["user"];
         final name = "${user['prenom'] ?? ''} ${user['nom'] ?? ''}".trim();
@@ -108,6 +107,41 @@ class AuthService {
 
     if (response.statusCode != 200 && response.statusCode != 201) {
       throw Exception("Échec de la mise à jour du profil");
+    }
+  }
+
+  // Envoyer le code de réinitialisation par email
+  Future<void> sendResetCode(String email) async {
+    final response = await http.post(
+      Uri.parse("$baseUrl/send-reset-code"),
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode({"email": email}),
+    );
+
+    if (response.statusCode != 200 && response.statusCode != 201) {
+      throw Exception(
+        "Email introuvable : ${response.statusCode} - ${response.body}",
+      );
+    }
+  }
+
+  // Réinitialiser le mot de passe avec le code
+  Future<void> resetPassword(
+      String email, String code, String newPassword) async {
+    final response = await http.post(
+      Uri.parse("$baseUrl/reset-password"),
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode({
+        "email": email,
+        "code": code,
+        "newPassword": newPassword,
+      }),
+    );
+
+    if (response.statusCode != 200 && response.statusCode != 201) {
+      throw Exception(
+        "Erreur : ${response.statusCode} - ${response.body}",
+      );
     }
   }
 }
