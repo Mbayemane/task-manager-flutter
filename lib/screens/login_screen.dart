@@ -61,20 +61,16 @@ class _LoginScreenState extends State<LoginScreen> {
             children: [
               const SizedBox(height: 40),
 
-              // Icône
-              Container(
-                width: 64,
-                height: 64,
-                decoration: BoxDecoration(
-                  color: const Color(0xFF2563EB),
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: const Icon(
-                  Icons.check_box,
-                  color: Colors.white,
-                  size: 36,
-                ),
-              ),
+              // Logo
+ClipRRect(
+  borderRadius: BorderRadius.circular(20),
+  child: Image.asset(
+    'assets/logo.png',
+    width: 150,
+    height: 150,
+    fit: BoxFit.contain,
+  ),
+),
               const SizedBox(height: 20),
 
               // Titre

@@ -3,6 +3,7 @@ import '../models/task.dart';
 import '../services/task_service.dart';
 import 'dashboard_screen.dart';
 import 'profile_screen.dart';
+import 'task_form_screen.dart';
 
 class CalendarScreen extends StatefulWidget {
   const CalendarScreen({super.key});
@@ -363,10 +364,30 @@ class _CalendarScreenState extends State<CalendarScreen> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: const Color(0xFF2563EB),
-        onPressed: () {},
-        child: const Icon(Icons.add, color: Colors.white),
+  backgroundColor: const Color(0xFF2563EB),
+  onPressed: () async {
+    final newTask = await Navigator.push<Task>(
+      context,
+      MaterialPageRoute(
+        builder: (_) => TaskFormScreen(
+          task: Task(
+            title: '',
+            content: '',
+            date: _selectedDate, // pré-remplir avec la date choisie
+            priority: 'Moyenne',
+          ),
+        ),
       ),
+    );
+
+    if (newTask != null) {
+      await _loadTasks(); // recharge les tâches
+      setState(() {});    // rafraîchit l’écran
+    }
+  },
+  child: const Icon(Icons.add, color: Colors.white),
+),
+
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: 1,
         selectedItemColor: const Color(0xFF2563EB),
